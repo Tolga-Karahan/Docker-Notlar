@@ -1,7 +1,8 @@
 # Image; uygulamayı oluşturan binaryleri, kütüphaneleri, kaynak kodu
 # ve tüm diğer şeyleri içerir. Container ise herhangi bir imagein
 # çalışan bir örneğidir. Aynı imagei temel alan çok sayıda container
-# oluşturabiliriz. 
+# oluşturabiliriz. Host işletim sistemini ve kernelini kullanır. VMler
+# gibi bir konuk işletim sistemi boot etmez. Bir uygulama gibi çalışır.
 
 # Docker Hub'da çeşitli imageler bulabiliriz. Örnek olarak nginx 
 # imageini kullanabiliriz. Aşağıdaki komutu koştuğumuzda Docker engine
