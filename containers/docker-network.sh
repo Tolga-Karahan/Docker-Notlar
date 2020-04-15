@@ -4,7 +4,7 @@ docker container port test_nginx
 
 # Yeni bir container oluşturduğumuzda container varsayılan olarak 
 # bridge/docker0 isimli sanal bir ağa bağlanır. Bu ağlar otomatik
-# olarak hostın ethernet arayüzüne bağlıdır. Her bir sanal ağ bir
+# olarak hostun ethernet arayüzüne bağlıdır. Her bir sanal ağ bir
 # NAT firewall aracılığıyla, host ip üzerinden yönlendirilir. Böylece 
 # containerlar nete çıkar.
 
@@ -34,7 +34,7 @@ docker container inspect --format '{{ .NetworkSettings.IPAddress }}' test_nginx
 # konuşabilir fakat portları publish etmediğimiz sürece bizim makinemizin portları
 # ile konuşamaz. Birbiri ile konuşması gerekmeyen containerları yeni sanal ağlar
 # oluşurarak farklı sanal ağlarda tutabiliriz. Farklı sanal ağlardaki containerlar
-# birbirleri ile konuşmaları gerekirse host üzerinden publish ettikleri portlar
+# birbirleri ile konuşmaları gerekirse, host üzerinden publish ettikleri portlar
 # üzerinden konuşabilirler.
 
 # Docker ağlarını görmek için docker network ls komutunu kullanabiliriz:
