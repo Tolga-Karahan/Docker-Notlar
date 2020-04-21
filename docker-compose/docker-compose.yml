@@ -1,0 +1,41 @@
+# Genellikle sadece bir tane container yeterli olmaz. Örneğin
+# veritabanı serverı için bir container, backend için başka
+# bir container vs gerekebilir. Docker içerisinde farklı sanal
+# ağların kurulması, portların expose edilmesi gerekebilir. Tüm
+# bu konfügürasyonları compose ile yapabiliriz. Compose bir CLI
+# ve YAML formatında bir konfügürasyon dosyasından oluşur. YAML
+# dosyasının versiyonları vardır ve her versiyon dosya içerisinde
+# hangi konfügürasyonları yapabileceğimizi belirler. Örnek bir
+# dosya formatı aşağıdaki gibidir:
+
+# Versiyon belirtmezsek default olarak v1 kullanılır.
+version: 
+
+# Servisle kastedilen containerlardır.
+services:  
+  # Servis ismi containerın ismi olacaktır. İsim verirken dikkat
+  # etmeliyiz çünkü network içerisinde DNS ismi olarakta kullanılacak.
+  servicename: 
+    # Containerda koşacak image
+    image: 
+    # Varsayılan container komutu
+    command: 
+    # Ortam değişkenleri
+    environment: 
+    # Volume bilgileri
+    volumes: 
+  servicename2:
+
+# Haricen volume oluşturmak için(docker volume create)
+volumes: 
+
+# Haricen ağlar oluşturmak için(docker network create)
+networks: 
+
+# YAML dosyasını key-value ikilileri gibi düşünebiliriz. Sağ kısımda
+# tek bir değer de olabilir bir liste de olabilir. Eğer liste varsa
+# - ile değerleri ayırıyoruz:
+  image:alpine
+  ports: 
+    -40:80 
+    -30:3006 
