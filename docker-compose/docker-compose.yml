@@ -39,3 +39,6 @@ networks:
   ports: 
     -40:80 
     -30:3006 
+
+# Network konfügürasyonu belirtilmediğinde varsayılan olarak [dizin_ismi]_default
+# isimli bir ağ oluşturulur ve tüm containerlar bu ağa bağlanır.
