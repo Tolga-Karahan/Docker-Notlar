@@ -42,3 +42,24 @@ networks:
 
 # Network konfügürasyonu belirtilmediğinde varsayılan olarak [dizin_ismi]_default
 # isimli bir ağ oluşturulur ve tüm containerlar bu ağa bağlanır.
+
+# docker-compose dosyası içerisinde image build edebiliriz.
+# Böylece komutlar koşmadan önce hazır bir image olduğunu garanti ederiz.
+# Image her seferinde build edilmez sadece bulunamadığı zaman build edilir.
+
+version: '2'
+
+services:
+  proxy:
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    ports:
+      - '80:80'
+  web:
+    image: httpd
+    volumes:
+      - ./html:/usr/local/apache2/htdocs/
+
+# Eğer imagei yeniden build etmek istiyorsak docker compose up --build  ve ya
+# docker-compose build komutlarını kullanabiliriz.
