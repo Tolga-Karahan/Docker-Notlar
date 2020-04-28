@@ -1,0 +1,113 @@
+# Docker 1.13 ile eklenen yeni bir soyutlama katmanıdır.
+# Temel olarak Swarm için compose dosyalarının işlevini görür.
+# Stacklar compose dosyalarını alarak servis, ağ ve volume
+# tanımlamaları için kullanır. Tek bir swarmın içerisinde,
+# servisler ile belirtilen, containerların orkestrasyonunu
+# yapar. Compose dosyalarından farklı olarak deployment,
+# güncelleme konfügürasyonları ve hangi durumlarda containerın
+# tekrar başlatılacağı gibi ayarlamaları belirleyebiliriz.
+    
+# Daha önce servis komutları ile deploy ettiğimiz vote
+# uygulamasının konfigürasyonunu stack ile yapalım:
+version: "3"
+services:
+
+    redis:
+        image: redis:3.2
+        networks:
+            - frontend
+        ports:
+            - 6379
+        deploy:
+            update_config:
+                parallelism: 2
+                # Başka bir containerı update etmeden önce 10sn bekle
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+
+    vote-frontend:
+        image: bretfisher/examplevotingapp_vote:latest
+        ports: 
+            - 80:80
+        networks:
+            - frontend
+        depends_on:
+            - redis
+        deploy:
+            replicas: 2
+            update_config:
+                parallelism: 2
+            restart_policy:
+                condition: on-failure
+
+    db:
+        image: postgres:9.4
+        volumes: 
+            - db-data:/var/lib/postgresql/data
+        networks:
+            - backend
+        environment:
+            - POSTGRES_HOST_AUTH_METOD=$PSQL_AUTH_METHOD
+        deploy:
+            placement:
+                constraints: [node.role == manager] 
+            replicas: 1
+            update_config:
+                parallelism: 2
+            restart_policy:
+                condition: on-failure 
+    
+    vote-backend:
+        image: bretfisher/examplevotingapp_result
+        networks:
+            - backend
+        ports:
+            - 6789:80
+        depends_on:
+            - db
+        deploy:
+            replicas: 1
+            update_config:
+                parallelism: 2
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+    
+    worker:
+        image: bretfisher/examplevotingapp_java
+        networks:
+            - frontend
+            - backend
+        depends_on:
+            - redis
+            - db
+        deploy:
+            mode: replicated
+            replicas: 1
+            labels: [APP=VOTING]
+            restart_policy:
+                condition: on-failure
+                delay: 10s
+                max_attempts: 3
+                window: 120s
+            placement:
+                constraints: [node.role == manager]
+
+    visualizer:
+        image: dockersamples/visualizer
+        ports:
+            - 8080:8080
+        stop_grace_period: 1m30s
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+
+networks:
+    frontend:
+    backend:
+
+volumes:
+    db-data:
