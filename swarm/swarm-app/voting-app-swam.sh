@@ -16,6 +16,7 @@ docker service create --name worker --network frontend \
 # Create a service for db
 docker service create --name db --network backend --mount \
        type=volume,source=db-data,target=/var/lib/postgresql/data \
+       postgres:9.4
 
 # Create a service for result app
 docker service create --nameresult --network backend -p 6789:80 \
