@@ -1,0 +1,24 @@
+# Docker compose ile lokalde de secretları kullanabiliriz.
+# Bu yöntem güvenlik sağlamaz fakat development ortamı ile
+# production ortamının mümkün olduğunca benzer olmasını sağlar.
+# Development amaçları için secretları docker compose dosyamızın
+# içinde kullanabiliriz. Lokalde çalıştığımız için bir swarm 
+# veritabanı vs. bulunmaz. Secret dosyaları basitçe bind mount edilir.
+
+version: "3.1"
+
+services:
+    db:
+        image: postgres
+        secrets:
+            - psql_user
+            - psql_pass
+        environment:
+            - POSTGRES_USER_FILE=/run/secrets/psql_user
+            - POSTGRES_PASSWORD_FILE=/run/secrets/psql_pass
+
+secrets:
+    psql_user: 
+        file: ./psql_user.txt
+    psql_pass:
+        file: ./psql_pass.txt
