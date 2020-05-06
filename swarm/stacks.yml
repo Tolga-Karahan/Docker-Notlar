@@ -2,9 +2,9 @@
 # Temel olarak Swarm için compose dosyalarının işlevini görür.
 # Stacklar compose dosyalarını alarak servis, ağ ve volume
 # tanımlamaları için kullanır. Tek bir swarmın içerisinde,
-# servisler ile belirtilen, containerların orkestrasyonunu
+# servisler ile belirtilen containerların orkestrasyonunu
 # yapar. Compose dosyalarından farklı olarak deployment,
-# güncelleme konfügürasyonları ve hangi durumlarda containerın
+# güncelleme konfigürasyonları ve hangi durumlarda containerın
 # tekrar başlatılacağı gibi ayarlamaları belirleyebiliriz.
     
 # Daha önce servis komutları ile deploy ettiğimiz vote
